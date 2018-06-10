@@ -1,0 +1,28 @@
+<view class="container">
+  <view class='statusBar' />
+  <view class='navigationContainer'>
+    <view class='iconContainer' bindtap='goback'>
+      <view class='navigationIcon' />
+    </view>
+    <view class='navigationTitle'>
+      <text style='font-size: 30rpx; color: #000; opacity: 0.8; font-weight: bold;'>快读•咨询</text>
+    </view>
+  </view>
+  <scroll-view scroll-y style='height: 89vh;'>
+    <view class='contentContainer'>
+      <view class='title'>{{article.title}}</view>
+      <view class='detailContainer'>
+        <view class='detail' wx:if='{{article.source.length > 0}}'>{{article.source}}</view>
+        <view class='detail'>{{article.date}}</view>
+        <view class='detail'>阅读 {{article.readCount}}</view>
+      </view>
+      <view wx:for='{{article.content}}' wx:for-item="item" wx:key="unique" class='article'>
+        <view wx:if="{{item.type === 'p'}}" style='font-size: 25rpx; opacity: 0.8;margin: 10rpx 0rpx 10rpx 0rpx;'>{{item.text}}</view>
+        <view wx:if="{{item.type === 'strong'}}" style='font-size: 30rpx; opacity: 0.8;margin: 10rpx 0rpx 10rpx 0rpx; font-weight: bold;'>{{item.text}}</view>
+        <view wx:if="{{item.type === 'image'}}" style='display: flex; justify-content: center; align-items: center; margin: 10rpx 0rpx 10rpx 0rpx;'>
+          <image src="{{item.src}}" mode='scaleToFill'></image>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

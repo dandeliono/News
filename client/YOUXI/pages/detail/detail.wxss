@@ -1,0 +1,73 @@
+.statusBar {
+  width: 100vw;
+  height: 5vh;
+  background-color: #fff;
+}
+
+.navigationContainer {
+  display: flex;
+  flex-direction: row;
+  height: 6vh;
+  width: 100vw;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  /* background-color: #549edd; */
+  border-bottom: 1px solid #549edd;
+}
+.iconContainer {
+  height: 100%;
+  width: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navigationIcon {
+  position: absolute;
+  border: 10px solid transparent;
+  border-right: 10px solid #000;
+}
+
+.navigationIcon:hover {
+  border-right: 20rpx solid #808080;
+}
+
+.navigationIcon:after {
+  content: '';
+  position: absolute;
+  top: -20rpx;
+  left: -16rpx;
+  border: 20rpx solid transparent;
+  border-right: 20rpx solid #fff;
+}
+.navigationTitle {
+   margin-left: 40rpx; 
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx;
+}
+
+.title {
+  height: 10vh;
+  font-size: 40rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.detailContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50rpx;
+}
+.detail {
+  font-size: 25rpx;
+  color: #C6C6C8;
+}

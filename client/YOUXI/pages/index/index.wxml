@@ -1,0 +1,54 @@
+<view class="container">
+  <view class='statusBar' />
+  <view class='navigationContainer'>
+    <view class='navigationIcon'>
+      <image src='../../images/icon.png' mode='scaleToFill' style='height: 60%; width: 60%;'></image>
+    </view>
+    <view class='navigationTitle'>
+      <text style='font-size: 30rpx; color: #ffffff; font-weight: bold;'>YOU•XI资讯</text>
+    </view>
+  </view>
+  <scroll-view>
+    <view class='navContainer'>
+      <view wx:for="{{array}}" wx:key="unique" wx:for-index="index" wx:for-item="item" class='nav' bindtap='setNav' id='{{index}}'>
+        <view style='display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 60%;'>
+          {{item}}
+          <view wx:if="{{index == nav}}" style=' width: 25rpx; border: 1rpx solid #ffffff;'></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class='topContainer' bindtap='toDetail' id='{{top.id}}'>
+    <view style='background-image: url({{top.firstImage}}); height: 100%;width: 100%;opacity: 0.1;'></view>
+    <view class='mask' style='background-image: url({{top.firstImage}});'>
+      <view class='hotContainer'>
+        <view class='hot'>热门</view>
+      </view>
+      <view class='topDetailContainer'>
+        <view class='topTitle'>{{top.title}}</view>
+        <view class='topDetail'>
+          <view class='topSource' wx:if="{{top.source.length > 0}}">{{top.source}}</view>
+          <view class='topDate'>{{top.date}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <scroll-view scroll-y style='height: 55vh;'>
+    <view class='newsContainer'>
+      <view wx:for="{{news}}" wx:key="unique" wx:for-index="index" wx:for-item="item" class='news'>
+        <view class='detailContainer' bindtap='toDetail' id='{{item.id}}'>
+          <view class='details'>
+            <view class='title'>{{item.title}}</view>
+            <view class='detail'>
+              <view class='source' wx:if='{{item.source.length > 0}}'>{{item.source}}</view>
+              <view class='date'>{{item.date}}</view>
+            </view>
+          </view>
+          <view class='image'>
+            <image src='{{item.firstImage}}' style='height: 90%; width: 100%;' mode='aspectFill'></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
