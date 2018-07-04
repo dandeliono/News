@@ -6,10 +6,10 @@ class mongoapi:
     def __del__(self):
         class_name = self.__class__.__name__
         print(class_name, "销毁")
-    def select(self,title):
-        return self.db.col.find({'title': title})
+    def selectRepect(self,title):
+        return self.db.col.find({'title': title}).count()
     def insert(self, title,imgSrc,jumpUrl,time):
-        if(self.select(title)):
+        if(self.selectRepect(title)):
             pass
         else:
             self.db.col.insert({"title":title,'imgSrc':imgSrc,'jumpUrl':jumpUrl,'time':time})

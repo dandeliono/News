@@ -13,7 +13,7 @@ def ajax():
     now = str(int(time.time()));
     print(int(now));
     contents = [];
-    END = 2;
+    END = 3;
     for i in range(1,END):
         page = str(i)
         url = 'http://db2.gamersky.com/LabelJsonpAjax.aspx?callback=jQuery18309820627977549694_'+now+'&jsondata={"type":"updatenodelabel","isCache":true,"cacheTime":60,"nodeId":"11007","isNodeId":"true","page"' ':'+page+'}'
