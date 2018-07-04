@@ -1,6 +1,7 @@
 import urllib.request
 import re
 import time
+from mong import mongoapi
 url = 'http://www.gamersky.com/news/'
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -36,6 +37,7 @@ def webPars(html):
 
 def xkspider(url):
     contents = ajax()
+    mong = mongoapi();
     for content in contents:
         content = content.replace("\\","")
         parttern = re.compile('<li>(.*?)</li>', re.S)
@@ -57,6 +59,8 @@ def xkspider(url):
             if(imgSrc):
                 print(item);
                 print("title:"+title+"imgSrc:"+imgSrc+" jumpUrl:"+jumpUrl+" time:"+relTime);
+                mong.insert(title,imgSrc,jumpUrl,relTime)
                 webPars(jumpUrl);
+    mong.showAll()
 xkspider(url)
 #ajax();
