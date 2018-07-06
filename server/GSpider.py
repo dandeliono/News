@@ -32,32 +32,46 @@ def webPars(html):
     bodyPattern  = re.compile('<div class="Mid2L_con">(.*?)</div>',re.S);
     bodyl = re.findall(bodyPattern, content)
     #print(bodyl)
-
+    mong = mongoapi(db='newsDetail');
+    mong.showAll();
     body = "".join(bodyl)
     body = body.replace(u'\u3000',u'')
     #print(body)1
     bodPattern  = re.compile('<p.*?>(.*?)</p>',re.S)
     bod = re.findall(bodPattern,body)
+    id = 0
     for item in bod:
-        #print("item"+item)
-
+        print("item"+item)
         item = item.replace('<br>','');
         if(item.find('href')>0):
-           # print("href"+item)
+            print("href"+item)
+            item = item.replace('" border="0','')
             bodyImgPattern = re.compile('<a.*?src="(.*?)">',re.S)
-            bodyImg = re.findall(bodyImgPattern,body);
-            print(bodyImg)
+            bodyImg = re.findall(bodyImgPattern,item);
+            for imgItem in bodyImg:
+                print(imgItem)
+                mong.insertDetail('image',imgItem,id,html);
+                id = id + 1
         elif(item.find('span')>0):
             item = item.replace('<span style="font-weight: bold;">', '');
             item = item.replace('</span>','');
+            item = item.replace('<span style="FONT-WEIGHT: bold">', '');
             print("span"+item);
+            mong.insertDetail('p',item,id,html)
+            id = id + 1
         elif(item.find('script')>0):
             pass
         elif(item.find('strong')>0):
             pass
         else:
             print(item);
-
+            mong.insertDetail('t',item,id,html)
+            id = id +1
+def imgspider(url):
+    urlpattern = re.compile('2018/(.*?).jpg',re.S)
+    urlname = re.findall(urlpattern,url)
+    urlname = ''.join(urlname)
+    urllib.request.urlretrieve(url, r'C:\Users\xu\Documents\GitHub\News\server\image\%s.jpg' %urlname)
 def xkspider(url):
     contents = ajax()
     mong = mongoapi();
@@ -82,8 +96,16 @@ def xkspider(url):
             if(imgSrc):
                 #print(item);
                 #print("title:"+title+"imgSrc:"+imgSrc+" jumpUrl:"+jumpUrl+" time:"+relTime);
-                mong.insert(title,imgSrc,jumpUrl,relTime)
+
+                urlpattern = re.compile('2018/(.*?).jpg', re.S)
+                urlname = re.findall(urlpattern, imgSrc)
+                urlname = ''.join(urlname)
+                urlname = 'http://127.0.0.1:9600/image/'+urlname
+                mong.insert(title,urlname,jumpUrl,relTime)
                 webPars(jumpUrl);
+                imgspider(imgSrc)
     mong.showAll()
 xkspider(url)
 #ajax();
+
+imgspider('https://imgs.gamersky.com/upimg/2018/201807041759357087.jpg')

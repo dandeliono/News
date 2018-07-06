@@ -1,9 +1,10 @@
-from flask import Flask
+from flask import Flask,Response,render_template, jsonify
 from flask import request
 from mong import mongoapi
 import json
 # -*- coding: utf-8 -*-
 mongo = mongoapi();
+mongoDetail = mongoapi(db='newsDetail')
 app = Flask(__name__)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 
@@ -21,9 +22,39 @@ def newsTitle():
     }
 
     return json.dumps(newsTitle);
+@app.route('/newsDetail',methods=['GET','POST'])
+def newsDetail():
+    searchword = request.args.get('hash', '')
+    print("serachword" + searchword);
+    newsList = mongoDetail.selectByHash(searchword)
+    title = mongo.selectTitle(searchword)
+    date = mongo.selectDate(searchword)
+    firstImage = mongo.selectFirstImg(searchword)
+    result ={
+        "id":searchword,
+        "title":title,
+        "date":date,
+        "source":"",
+        "firstImage": firstImage,
+        "content":newsList
+    }
+    newsDetail={
+        "code":200,
+        "message":"success",
+        "result":result
+    }
+    print(newsDetail)
+    return json.dumps(newsDetail)
+@app.route("/image/<imageid>")
+def index(imageid):
+    print(imageid)
+    image = open("image/{}.jpg".format(imageid),mode='rb')
+    print(image)
+    resp = Response(image, mimetype="image/jpeg")
+    return resp
 @app.route('/',methods=['GET','POST'])
 def home():
-    pass
+    return '''hello world'''
 @app.route('/signin', methods=['GET'])
 def signin_form():
     return '''<form action="/signin" method="post">
