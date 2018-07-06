@@ -21,7 +21,7 @@ def ajax():
         response = urllib.request.urlopen(request)
         content = response.read().decode('utf-8')
         contents.append(content)
-        print(contents)
+        #print(contents)
         time.sleep(10);
     return contents
 #为方便编写 网页解析代码也同样放在这里
@@ -29,11 +29,34 @@ def webPars(html):
     request = urllib.request.Request(html, headers=headers)
     response = urllib.request.urlopen(request)
     content = response.read().decode('utf-8')
-    bodyPattern  = re.compile('<p.*?>(.*?)</p>');
+    bodyPattern  = re.compile('<div class="Mid2L_con">(.*?)</div>',re.S);
     bodyl = re.findall(bodyPattern, content)
-    print(bodyl)
+    #print(bodyl)
+
     body = "".join(bodyl)
-    print(body)
+    body = body.replace(u'\u3000',u'')
+    #print(body)1
+    bodPattern  = re.compile('<p.*?>(.*?)</p>',re.S)
+    bod = re.findall(bodPattern,body)
+    for item in bod:
+        #print("item"+item)
+
+        item = item.replace('<br>','');
+        if(item.find('href')>0):
+           # print("href"+item)
+            bodyImgPattern = re.compile('<a.*?src="(.*?)">',re.S)
+            bodyImg = re.findall(bodyImgPattern,body);
+            print(bodyImg)
+        elif(item.find('span')>0):
+            item = item.replace('<span style="font-weight: bold;">', '');
+            item = item.replace('</span>','');
+            print("span"+item);
+        elif(item.find('script')>0):
+            pass
+        elif(item.find('strong')>0):
+            pass
+        else:
+            print(item);
 
 def xkspider(url):
     contents = ajax()
@@ -42,7 +65,7 @@ def xkspider(url):
         content = content.replace("\\","")
         parttern = re.compile('<li>(.*?)</li>', re.S)
         items = re.findall(parttern,content)
-        print(items);
+        #print(items);
         for item in items:
             titPattern = re.compile('alt="(.*?)"', re.S);
             tit = re.findall(titPattern,item);
@@ -57,8 +80,8 @@ def xkspider(url):
             relTi = re.findall(relTiPattern, item);
             relTime = "".join(relTi);
             if(imgSrc):
-                print(item);
-                print("title:"+title+"imgSrc:"+imgSrc+" jumpUrl:"+jumpUrl+" time:"+relTime);
+                #print(item);
+                #print("title:"+title+"imgSrc:"+imgSrc+" jumpUrl:"+jumpUrl+" time:"+relTime);
                 mong.insert(title,imgSrc,jumpUrl,relTime)
                 webPars(jumpUrl);
     mong.showAll()

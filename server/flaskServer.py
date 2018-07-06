@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 
 @app.route('/newsTitle', methods=['GET', 'POST'])
-def home():
+def newsTitle():
     searchword = request.args.get('type', '')
     print("serachword"+searchword);
     if request.method == 'GET':
@@ -21,7 +21,9 @@ def home():
     }
 
     return json.dumps(newsTitle);
-
+@app.route('/',methods=['GET','POST'])
+def home():
+    pass
 @app.route('/signin', methods=['GET'])
 def signin_form():
     return '''<form action="/signin" method="post">

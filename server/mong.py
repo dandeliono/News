@@ -11,6 +11,8 @@ class mongoapi:
         print(class_name, "销毁")
     def selectRepect(self,title):
         return self.db.col.find({'title': title}).count()
+    def selectByType(self,type):
+        return self.db.col.find({'type':type});
     def insert(self, title,imgSrc,jumpUrl,time,type='surrounding'):
         if(self.selectRepect(title)):
             pass
