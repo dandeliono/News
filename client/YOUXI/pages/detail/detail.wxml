@@ -5,7 +5,7 @@
       <view class='navigationIcon' />
     </view>
     <view class='navigationTitle'>
-      <text style='font-size: 30rpx; color: #000; opacity: 0.8; font-weight: bold;'>快读•咨询</text>
+      <text style='font-size: 30rpx; color: #000; opacity: 0.8; font-weight: bold;'>YOU•XI资讯</text>
     </view>
   </view>
   <scroll-view scroll-y style='height: 89vh;'>
@@ -20,9 +20,18 @@
         <view wx:if="{{item.type === 'p'}}" style='font-size: 25rpx; opacity: 0.8;margin: 10rpx 0rpx 10rpx 0rpx;'>{{item.text}}</view>
         <view wx:if="{{item.type === 'strong'}}" style='font-size: 30rpx; opacity: 0.8;margin: 10rpx 0rpx 10rpx 0rpx; font-weight: bold;'>{{item.text}}</view>
         <view wx:if="{{item.type === 'image'}}" style='display: flex; justify-content: center; align-items: center; margin: 10rpx 0rpx 10rpx 0rpx;'>
-          <image src="{{item.src}}" mode='scaleToFill'></image>
+          <image src="{{item.image}}" mode='scaleToFill'></image>
         </view>
       </view>
     </view>
   </scroll-view>
+  <view style='width:100vw ;font-size: 38rpx; color: #000; opacity: 0.8;'>评论：</view>
+  <view style='width:85vw ;font-size: 30rpx; color: #000; opacity: 0.8;'><text>{{comments}}</text></view>
+<view class="talk" bindtap="bindReply" style='background: #2ECC71;border-radius: 108rpx;length: 84rpx;width: 119rpx;text-align: center;color: #fff;'>回复</view>
+ 
+<view class="release" hidden="{{!releaseFocus}}">
+<textarea class="text"placeholder-class="input_null"fixed="true"maxlength="-1"show-confirm-bar="false"cursor-spacing="15"auto-height="true"focus="{{releaseFocus}}"bindinput="reply"
+placeholder="回复 {{releaseName}}"></textarea>
+<view class="submit" bindtap='replyfinish'>发送</view>
+</view>
 </view>

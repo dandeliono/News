@@ -9,6 +9,7 @@
     "navigationBarTitleText": "YOUxi资讯",
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance":850
   }
 }

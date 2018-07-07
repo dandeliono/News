@@ -19,7 +19,7 @@
     </view>
   </scroll-view>
   <view class='topContainer' bindtap='toDetail' id='{{top.id}}'>
-    <view style='background-image: url({{top.firstImage}}); height: 100%;width: 100%;opacity: 0.1;'></view>
+    <view style='background-image: url({{top.firstImage}});background-repeat:no-repeat; height: 100%;width: 100%;opacity: 0.1;'></view>
     <view class='mask' style='background-image: url({{top.firstImage}});'>
       <view class='hotContainer'>
         <view class='hot'>热门</view>
@@ -35,7 +35,8 @@
   </view>
   <scroll-view scroll-y style='height: 55vh;'>
     <view class='newsContainer'>
-      <view wx:for="{{news}}" wx:key="unique" wx:for-index="index" wx:for-item="item" class='news'>
+      <view wx:for="{{news}}" wx:key="unique" wx:for-index="index" wx:for-item="item" class='news' style='display:{{index>=news.length-count? "block":"none"}}'>
+      
         <view class='detailContainer' bindtap='toDetail' id='{{item.id}}'>
           <view class='details'>
             <view class='title'>{{item.title}}</view>

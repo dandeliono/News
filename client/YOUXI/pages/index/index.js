@@ -1,22 +1,35 @@
 Page({
   data: {
-    array: ['国内', '国际', '财经', '娱乐', '军事', '体育', '其他'],
+    array: ['热点', '单机', '网游', '影视', '动漫', '周边'],
     nav: 0,
     news: [],
-    top: {}
+    top: {},
+    count:10
   },
 
   onLoad() {
-    this.getList(0);
+    this.getList(5);
   },
-
   onPullDownRefresh() {
     const type = this.data.nav;
+    var count = this.data.count + 10
+    this.setData({
+      count: count,
+    })
     this.getList(type, () => {
       wx.stopPullDownRefresh();
     })
   },
-
+  
+  onReachBottom: function () {
+    console.log(this.data)
+    setTimeout(() => {
+      var count = this.data.count +10
+      this.setData({
+        count: count,
+      })
+    }, 100)
+  },
   setNav(e) {
     const index = e.currentTarget.id;
     this.setData({
@@ -27,47 +40,29 @@ Page({
 
   getList(v, callback) {
     var that = this;
-    let type = v;
-    switch (type) {
-      case '0':
-        type = 'gn';
-        break;
-      case '1':
-        type = 'gj';
-        break;
-      case '2':
-        type = 'cj';
-        break;
-      case '3':
-        type = 'yl';
-        break;
-      case '4':
-        type = 'js';
-        break;
-      case '5':
-        type = 'ty';
-        break;
-      case '6':
-        type = 'other';
-        break;
-      default:
-        type = 'gn';
+    let type = this.data.array[v];
+    if(type === '热点'){
+      type = '周边'
     }
+    
+    
     wx.showLoading({
       title: "加载中"
+      
     })
+
     wx.request({
-      url: `https://test-miniprogram.com/api/news/list?type=${type}`,
+      url: `http://127.0.0.1:9600/newsTitle?type=${type}`,
       method: 'GET',
       success: res => {
         const result = res.data.result.map(v => ({
-          id: v.id,
-          firstImage: v.firstImage.length > 0 ? v.firstImage : '../../images/news.jpg',
+          id: v.jumpUrl,
+          firstImage: v.imgSrc.length > 0 ? v.imgSrc : '../../images/news.jpg',
           title: v.title,
           source: v.source,
-          date: v.date.slice(0, 10)
+          date: v.date
         }));
-        console.log(result);
+
         const top = result[0];
         result.shift();
         that.setData({
