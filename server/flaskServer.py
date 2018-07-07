@@ -6,7 +6,7 @@ from flask import request
 from unit.mong import *
 
 # -*- coding: utf-8 -*-
-mongo = newsItem()
+mongo = newsItem
 #mongo = mongoapi();
 mongoDetail = newsDetail()
 #mongoDetail = mongoapi(db='newsDetail')

@@ -86,7 +86,7 @@ class xkSpider():
                 pass
             elif (item.find('strong') > 0):
                 pass
-            elif (item.find('更多资讯请关注') > 0):
+            elif (item.find('更多资讯') > 0):
                 pass
             else:
                 print(item);
@@ -113,7 +113,7 @@ class xkSpider():
         url = self.url
         contents = self.analysis()
         # mong = mongoapi();
-        mong = newsItem();
+        mong = newsItem;
         for content in contents:
             content = content.replace("\\", "")
             parttern = re.compile('<li>(.*?)</li>', re.S)

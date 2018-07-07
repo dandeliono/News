@@ -99,7 +99,6 @@ class mongoapi:
         return allData;
     def remove(self):
         self.db.col.remove()
-mongo = mongoapi();
 
 
 class newsItem(mongoapi):
@@ -124,7 +123,7 @@ class newsItem(mongoapi):
         count = data[0]['readercount']
         print(data[0]['readercount'])
         return count
-
+newsItem = newsItem();
 
 class newsDetail(mongoapi):
     def __init__(self, db='newsDetail', localhost='localhost', port=27017):
