@@ -29,29 +29,39 @@ def webPars(html):
     request = urllib.request.Request(html, headers=headers)
     response = urllib.request.urlopen(request)
     content = response.read().decode('utf-8')
-    bodyPattern  = re.compile('<div class="Mid2L_con">(.*?)</div>',re.S);
+    bodyPattern  = re.compile('<div class="Mid2L_con">(.*?)<!--文章内容导航 结束-->',re.S);
     bodyl = re.findall(bodyPattern, content)
     #print(bodyl)
     mong = mongoapi(db='newsDetail');
     mong.showAll();
     body = "".join(bodyl)
     body = body.replace(u'\u3000',u'')
-    #print(body)1
+    print(html+"body"+body)
     bodPattern  = re.compile('<p.*?>(.*?)</p>',re.S)
     bod = re.findall(bodPattern,body)
     id = 0
     for item in bod:
         print("item"+item)
         item = item.replace('<br>','');
-        if(item.find('href')>0):
+        if(item.find('src')>0):
             print("href"+item)
             item = item.replace('" border="0','')
             bodyImgPattern = re.compile('<a.*?src="(.*?)">',re.S)
             bodyImg = re.findall(bodyImgPattern,item);
             for imgItem in bodyImg:
                 print(imgItem)
-                mong.insertDetail('image',imgItem,id,html);
-                id = id + 1
+                if(imgItem != '//pub.idqqimg.com/wpa/images/group.png'):
+                    imgspider(imgItem)
+                urlpattern = re.compile('/.*?2018/(.*?).jpg', re.S)
+                urlname = re.findall(urlpattern, imgItem)
+                urlname = ''.join(urlname)
+                urlname = urlname.replace('/','')
+                if(len(urlname)>25):
+                    urlname = urlname[-25:]
+                if(urlname != ''):
+                    urlname = 'http://127.0.0.1:9600/image/' + urlname
+                    mong.insertDetail('image',urlname,id,html);
+                    id = id + 1
         elif(item.find('span')>0):
             item = item.replace('<span style="font-weight: bold;">', '');
             item = item.replace('</span>','');
@@ -63,15 +73,24 @@ def webPars(html):
             pass
         elif(item.find('strong')>0):
             pass
+        elif(item.find('更多资讯请关注')>0):
+            pass
         else:
             print(item);
-            mong.insertDetail('t',item,id,html)
+            mong.insertDetail('p',item,id,html)
             id = id +1
 def imgspider(url):
     urlpattern = re.compile('2018/(.*?).jpg',re.S)
     urlname = re.findall(urlpattern,url)
+
     urlname = ''.join(urlname)
-    urllib.request.urlretrieve(url, r'C:\Users\xu\Documents\GitHub\News\server\image\%s.jpg' %urlname)
+    urlname = urlname.replace('/', '')
+    if (len(urlname) > 25):
+        urlname = urlname[-25:]
+    try:
+        urllib.request.urlretrieve(url, r'C:\Users\xu\Documents\GitHub\News\server\image\%s.jpg' %urlname)
+    except Exception as e:
+        print(url+"图片无法下载")
 def xkspider(url):
     contents = ajax()
     mong = mongoapi();
@@ -107,5 +126,3 @@ def xkspider(url):
     mong.showAll()
 xkspider(url)
 #ajax();
-
-imgspider('https://imgs.gamersky.com/upimg/2018/201807041759357087.jpg')
