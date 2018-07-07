@@ -5,7 +5,7 @@ def splite(text):
  print("/ ".join(fenci_text))
 #第二步：去停用词
 #这里是有一个文件存放要改的文章，一个文件存放停用表，然后和停用表里的词比较，一样的就删掉，最后把结果存放在一个文件中
- stopwords = {}.fromkeys([ line.rstrip() for line in open('resoue/stopwords.txt') ])
+ stopwords = {}.fromkeys([ line.rstrip() for line in open('resource/stopwords.txt') ])
  final = ""
  for word in fenci_text:
     if word not in stopwords:

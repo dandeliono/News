@@ -14,10 +14,11 @@ class NB:
         #mongoDetail = mongoapi(db='newsDetail');
         self.mongoDetail = newsDetail();
         #mongoTitle = mongoapi();
-        self.mongoTitle = newsItem();
+        self.mongoTitle = newsItem;
         self.titleAlldata = self.mongoTitle.showAll()
+
 class fenlei(NB):
-    def fenlei(self):
+    def fenleis(self):
         typeList = ['科技','网游','单机','影视','网游','动漫']
         for item in self.titleAlldata:
             print(item['title'])
@@ -41,6 +42,9 @@ class fenlei(NB):
                 except Exception:
                     pass
         #print(client.topic(title, content)['item']['lv2_tag_list'][0]['tag']);
+    def classi(self,title,content):
+        type = self.client.topic(title, content)['item']['lv2_tag_list'][0]['tag'];
+        return type
 class label(NB):
     def label(self):
         typeList = ['科技','网游','单机','硬件','影视','网游','动漫']
@@ -62,5 +66,6 @@ class label(NB):
                             flag = 1
                     except Exception:
                         pass
-nb = fenlei();
-nb.fenlei();
+if __name__ == '__main__':
+    nb = fenlei();
+    nb.fenleis();
