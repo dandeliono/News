@@ -3,24 +3,15 @@ import time
 import json
 from unit.objectid import timestamp_from_objectid
 
+
 class mongoapi:
-    def __init__(self, db = 'newsItem',localhost='localhost', port=27017):
+    def __init__(self,localhost='localhost', port=27017):
         conn = MongoClient(localhost, port);
-        if(db == 'newsItem'):
-            self.db = conn.newsItemDb
-        if(db == 'newsDetail'):
-            self.db = conn.newsDetail
-        if(db == 'History'):
-            self.db = conn.History
-        if(db == 'comment'):
-            self.db = conn.Comment
+
     def __del__(self):
         class_name = self.__class__.__name__
         print(class_name, "销毁")
-    def inserctCommetn(self,openid,comment,title):
 
-        times = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.db.col.insert({'openid':openid,'comment':comment, 'title': title,'time':times})
     def selectTitle(self,hash):
         data = ""
         for item in self.db.col.find({"jumpUrl":hash},{'_id':0,"title": 1}):
@@ -85,32 +76,9 @@ class mongoapi:
                 if(news['title']!=title):
                     newsList.append(news)
         return newsList
-    def insertHistory(self,openid,title,time):
-        self.db.col.insert({'openid':openid,'title': title,'time':time})
-    def insertDetail(self,type,content,id,hash):
-        if(type == 'p'):
-            ty = 'text'
-        else:
-            ty = 'image'
-        self.db.col.insert({'type':type,ty:content,'id':id,'hash':hash})
+
     def delete(self,title):
         self.db.col.remove({'title':title})
-    def updataTitleType(self,title,type):
-        self.db.col.update({"title": title}, {'$set': {"type": type}})
-        print('修改完成')
-    def updataTitleLabel(self,title,label):
-        self.db.col.update({"title": title}, {'$set': {"label": label}})
-        print('修改完成')
-    def selectReaderCount(self,title):
-        data = []
-        for item in self.db.col.find({"title": title}, {'_id': 0, "readercount": 1}):
-            data.append(item)
-        count = data[0]['readercount']
-        print(data[0]['readercount'])
-        return count
-    def updateReader(self,title,readercount):
-        self.db.col.update({"title": title}, {'$set': {"readercount": readercount}})
-        print('修改完成')
     def selectByTy(self,type):
         allData = []
         for item in self.db.col.find({'type':type}):
@@ -134,3 +102,54 @@ class mongoapi:
 mongo = mongoapi();
 
 
+class newsItem(mongoapi):
+    def __init__(self, db='newsItem', localhost='localhost', port=27017):
+        conn = MongoClient(localhost, port);
+        self.db = conn.newsItemDb
+    def updateReader(self,title,readercount):
+        self.db.col.update({"title": title}, {'$set': {"readercount": readercount}})
+        print('修改完成')
+
+    def updataTitleType(self,title,type):
+        self.db.col.update({"title": title}, {'$set': {"type": type}})
+        print('修改完成')
+    def updataTitleLabel(self,title,label):
+        self.db.col.update({"title": title}, {'$set': {"label": label}})
+        print('修改完成')
+
+    def selectReaderCount(self, title):
+        data = []
+        for item in self.db.col.find({"title": title}, {'_id': 0, "readercount": 1}):
+            data.append(item)
+        count = data[0]['readercount']
+        print(data[0]['readercount'])
+        return count
+
+
+class newsDetail(mongoapi):
+    def __init__(self, db='newsDetail', localhost='localhost', port=27017):
+        conn = MongoClient(localhost, port);
+        self.db = conn.newsDetail
+    def insertDetail(self,type,content,id,hash):
+        if(type == 'p'):
+            ty = 'text'
+        else:
+            ty = 'image'
+        self.db.col.insert({'type':type,ty:content,'id':id,'hash':hash})
+class History(mongoapi):
+    def __init__(self, db='History', localhost='localhost', port=27017):
+        conn = MongoClient(localhost, port);
+        self.db = conn.History
+
+    def insertHistory(self, openid, title, time):
+        self.db.col.insert({'openid': openid, 'title': title, 'time': time})
+
+
+class Comment(mongoapi):
+    def __init__(self, db='Comment', localhost='localhost', port=27017):
+        conn = MongoClient(localhost, port);
+        self.db = conn.Comment
+    def inserctCommetn(self,openid,comment,title):
+
+        times = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.db.col.insert({'openid':openid,'comment':comment, 'title': title,'time':times})

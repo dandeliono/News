@@ -1,14 +1,19 @@
-from flask import Flask,Response,render_template, jsonify
-from flask import request
-from mong import mongoapi
 import urllib.request
-import json
-import time
+
+from flask import Flask, Response
+from flask import request
+
+from unit.mong import *
+
 # -*- coding: utf-8 -*-
-mongo = mongoapi();
-mongoDetail = mongoapi(db='newsDetail')
-mongoHistory = mongoapi(db='History')
-mongoComment = mongoapi(db='comment')
+mongo = newsItem()
+#mongo = mongoapi();
+mongoDetail = newsDetail()
+#mongoDetail = mongoapi(db='newsDetail')
+#mongoHistory = mongoapi(db='History')
+mongoHistory = History()
+#mongoComment = mongoapi(db='comment')
+mongoComment = Comment()
 app = Flask(__name__)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 
@@ -29,7 +34,6 @@ def newsTitle():
         "message":"success",
         "result":newsList
     }
-
     return json.dumps(newsTitle);
 @app.route('/newsDetail',methods=['GET','POST'])
 def newsDetail():
