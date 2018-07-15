@@ -33,9 +33,7 @@ class imgSpider():
 class xkSpider():
     def __init__(self, url):
         self.url = url
-
         # 为方便编写 网页解析代码也同样放在这里
-
     def webPars(self,html):
         request = urllib.request.Request(html, headers=headers)
         response = urllib.request.urlopen(request)
@@ -144,6 +142,7 @@ class xkSpider():
                     self.webPars(jumpUrl);
                     imgSpiders = imgSpider(imgSrc);
                     imgSpiders.imgspider();
+        return True
 
 
 if __name__ == '__main__':

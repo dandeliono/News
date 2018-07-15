@@ -7,11 +7,12 @@ from time import ctime, sleep
 def t1(func):
     for i in range(100):
         starttime = datetime.datetime.now()
-        url = "http://127.0.0.1:9600/newsTitle?type="+urllib.parse.quote("网游")
+        url = "http://127.0.0.1:9600/newsTitle?type="\
+              +urllib.parse.quote("网游")
         f = urllib.request.urlopen(url)
         s = f.read().decode('utf-8')
         endtime = datetime.datetime.now()
-        print("round:%s, tread number:%s, returnValue:%s,\ntime:%f" % (i, func, s, (endtime - starttime).microseconds / 1000))
+        print("round:%s, tread number:%s, returnValue:%s,\ntime:%fms" %(i, func, s, (endtime - starttime).microseconds / 1000))
         sleep(1)
 
 

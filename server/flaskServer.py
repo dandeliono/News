@@ -7,12 +7,8 @@ from unit.mong import *
 
 # -*- coding: utf-8 -*-
 mongo = newsItem
-#mongo = mongoapi();
 mongoDetail = newsDetail()
-#mongoDetail = mongoapi(db='newsDetail')
-#mongoHistory = mongoapi(db='History')
 mongoHistory = History()
-#mongoComment = mongoapi(db='comment')
 mongoComment = Comment()
 app = Flask(__name__)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))

@@ -1,9 +1,11 @@
 from aip import AipNlp
 
 from unit.mong import *
-
+from abc import ABCMeta, abstractmethod
 
 class NB:
+    __metaclass__ = ABCMeta
+
     def __init__(self):
         APP_ID = '11502608'
         API_KEY = 'ZfggmXPa4BakVqvZDXmZVbUY'
@@ -16,6 +18,15 @@ class NB:
         #mongoTitle = mongoapi();
         self.mongoTitle = newsItem;
         self.titleAlldata = self.mongoTitle.showAll()
+
+    @abstractmethod
+    def fenleis(self):
+        pass
+
+    @abstractmethod
+    def classi(self):
+        pass
+
 
 class fenlei(NB):
     def fenleis(self):
@@ -46,7 +57,7 @@ class fenlei(NB):
         type = self.client.topic(title, content)['item']['lv2_tag_list'][0]['tag'];
         return type
 class label(NB):
-    def label(self):
+    def fenleis(self):
         typeList = ['科技','网游','单机','硬件','影视','网游','动漫']
         for item in self.titleAlldata:
             print(item['title'])
@@ -66,6 +77,12 @@ class label(NB):
                             flag = 1
                     except Exception:
                         pass
+
+    def classi(self, title, content):
+        type = self.client.topic(title, content)['item']['lv2_tag_list'][0]['tag'];
+        return type
+
+
 if __name__ == '__main__':
     nb = fenlei();
     nb.fenleis();
